@@ -1,2 +1,3 @@
 # CCPL
-CCPL:跨模态视觉文本交叉耦合CCPL探索了如何加强图像特征和文本特征的深度融合，CCPL模型主要包括CCPG和CMF俩个模块。其中，CCPG模块加强了视觉提示和文本提示的交互，提高了二者捕获到对方的关键信息的能力并将其融入自身的特征当中。CMF模块加强了图像特征和文本特征的融合，且有效的维持了图像和文本的语义一致性。
+
+The CCPL model mainly includes CCPG and CMF modules. Among them, the CCPG module strengthens the interaction between visual prompt and text prompt, and improves the ability of both to capture each other's key information and integrate it into their features. The CMF module strengthens the fusion of image features and text features, and effectively maintains the semantic consistency of image and text. The experimental results show that our CCPL achieves the best comprehensive performance in few-shot image classification learning. Through ablation experiments, we analyze the contribution of CCPG and CMF modules.
