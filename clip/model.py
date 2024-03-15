@@ -288,7 +288,7 @@ class PromptAttention(nn.Module):
 
         self.fusing = design_details['fusing']
 
-        # self.α = 1
+        self.α = 0.9
 
     def attention(self, x: torch.Tensor):
         self.attn_mask = self.attn_mask.to(dtype=x.dtype, device=x.device) if self.attn_mask is not None else None
@@ -318,30 +318,20 @@ class PromptAttention(nn.Module):
         # visual_context = visual_context.expand(-1, textual_batch, -1)
 
         # generate new visual context
-        # new_visual_context = self.α * visual_context + \
-        #                      (1 - self.α) * \
-        #                      self.promt_attention_visual(self.ln_pa_1_visual(self.proj_t2v(textual_context)),
-        #                                                  self.ln_pa_1_visual(visual_context),
-        #                                                  self.ln_pa_1_visual(visual_context),
-        #                                                  need_weights=False)[0]
-
-        new_visual_context = visual_context + \
+        new_visual_context = self.α * visual_context + \
+                             (1 - self.α) * \
                              self.promt_attention_visual(self.ln_pa_1_visual(self.proj_t2v(textual_context)),
                                                          self.ln_pa_1_visual(visual_context),
                                                          self.ln_pa_1_visual(visual_context),
                                                          need_weights=False)[0]
 
+
         new_visual_context = new_visual_context + self.mlp_pa_visual(self.ln_pa_2_visual(new_visual_context))
 
         # generate new textual context
-        # new_textual_context = self.α * textual_context + \
-        #                       (1 - self.α) * \
-        #                       self.promt_attention_text(self.ln_pa_1_text(self.proj_v2t(visual_context)),
-        #                                                 self.ln_pa_1_text(textual_context),
-        #                                                 self.ln_pa_1_text(textual_context),
-        #                                                 need_weights=False)[0]
-        new_textual_context =  textual_context + \
-                               self.promt_attention_text(self.ln_pa_1_text(self.proj_v2t(visual_context)),
+        new_textual_context = self.α * textual_context + \
+                              (1 - self.α) * \
+                              self.promt_attention_text(self.ln_pa_1_text(self.proj_v2t(visual_context)),
                                                         self.ln_pa_1_text(textual_context),
                                                         self.ln_pa_1_text(textual_context),
                                                         need_weights=False)[0]
